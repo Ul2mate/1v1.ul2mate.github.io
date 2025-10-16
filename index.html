@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Launch Embedded Game</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Launch Unity Game</title>
   <style>
     :root {
       --bg: #0f1720;
@@ -11,132 +11,119 @@
       --accent: #16a34a;
     }
     html, body {
-      height: 100%;
       margin: 0;
+      height: 100%;
       background: var(--bg);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
       color: #e6eef6;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
     }
     .wrap {
       min-height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding: 28px;
-      gap: 18px;
-    }
-    header {
-      width: 100%;
-      max-width: 1100px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--card);
-      border-radius: 12px;
-      padding: 16px 24px;
-      box-shadow: 0 6px 24px rgba(2,6,23,0.6);
-    }
-    h1 {
-      font-size: 1.2rem;
-      margin: 0;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px;
     }
     .card {
-      width: 100%;
-      max-width: 1100px;
       background: var(--card);
       border-radius: 12px;
-      padding: 20px;
+      padding: 30px 40px;
       box-shadow: 0 6px 24px rgba(2,6,23,0.6);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 18px;
+      text-align: center;
     }
-    .btn {
+    h1 {
+      margin-top: 0;
+      font-size: 1.4rem;
+    }
+    button {
       background: var(--accent);
       color: white;
+      font-size: 1.1rem;
       font-weight: 600;
       border: none;
       border-radius: 10px;
       padding: 12px 24px;
       cursor: pointer;
-      font-size: 1rem;
       transition: background 0.2s ease;
     }
-    .btn:hover {
-      background: #128a3d;
-    }
-    .notice {
-      font-size: 0.9rem;
-      color: #bcd7b8;
-    }
+    button:hover { background: #128a3d; }
+    .notice { font-size: 0.9rem; color: #bcd7b8; margin-top: 10px; }
   </style>
 </head>
-
 <body>
   <div class="wrap">
-    <header>
-      <div>
-        <h1>Launch Game Embed</h1>
-        <div style="font-size:0.9rem;color:#bcd7b8;">Opens the Unity WebGL game in an about:blank tab.</div>
-      </div>
-    </header>
-
     <div class="card">
-      <button class="btn" onclick="openEmbed()">Launch Game</button>
-      <div class="notice">Click to open the embedded game in a new tab.</div>
+      <h1>Unity Game Launcher</h1>
+      <button onclick="openEmbed()">Launch Game</button>
+      <div class="notice">Opens the game in a new about:blank tab.</div>
     </div>
   </div>
 
   <script>
     function openEmbed() {
-      const win = window.open('about:blank');
+      const win = window.open();
+      if (!win) {
+        alert("Popup blocked! Please allow pop-ups for this site.");
+        return;
+      }
+
       const html = `
-      <body><module>
-      <moduleprefs title="Google.com">
-      <content type="html"><!--[CDATA[
-      <html>
-      <meta charset="utf-8">
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/n-101-1/1@main/style.css">
-      <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/UnityProgress.js"></script>
-      <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.js"></script>
-      <script>
-        var gameInstance;
-        window.onload = function () {
-          gameInstance = UnityLoader.instantiate("gameContainer", "https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.json", {
-            onProgress: UnityProgress,
-            Module: {
-              onRuntimeInitialized: function () {
-                UnityProgress(gameInstance, "complete");
-              },
-            },
-          });
-        };
-      </script>
-      <div class="webgl-content">
-        <div id="gameContainer" style="width:100%;height:100%;margin:0;padding:0;border:0;position:relative;background:#000;"></div>
-      </div>
-      <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-app.js"></script>
-      <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-auth.js"></script>
-      <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-firestore.js"></script>
-      <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase.js"></script>
-      <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1login.js?v=2"></script>
-      <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firestore.js"></script>
-      <script>
-        initializeFireBase();
-        function showAds() { console.log("show ads"); }
-        function requestNewAd() { unityAdFinishedCallback(); }
-        function unityAdFinishedCallback() {
-          try { if (gameInstance) gameInstance.SendMessage("AdsManager", "OnWebCallback"); }
-          catch (error) { console.log(error); }
-        }
-      </script>
-      ]]> </content> </moduleprefs></module> </body>`;
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Unity Game</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/n-101-1/1@main/style.css">
+<script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/UnityProgress.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.js"></script>
+</head>
+<body style="margin:0;padding:0;overflow:hidden;background:#000">
+<div class="webgl-content">
+  <div id="gameContainer" style="width:100vw;height:100vh"></div>
+</div>
+<script>
+  var gameInstance;
+  window.onload = function () {
+    gameInstance = UnityLoader.instantiate(
+      "gameContainer",
+      "https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.json",
+      {
+        onProgress: UnityProgress,
+        Module: {
+          onRuntimeInitialized: function () {
+            UnityProgress(gameInstance, "complete");
+          },
+        },
+      }
+    );
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-app.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-auth.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-firestore.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1login.js?v=2"></script>
+<script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firestore.js"></script>
+<script>
+  initializeFireBase();
+  function showAds() { console.log("show ads"); }
+  function requestNewAd() { unityAdFinishedCallback(); }
+  function unityAdFinishedCallback() {
+    try { if (gameInstance) gameInstance.SendMessage("AdsManager","OnWebCallback"); }
+    catch(e){ console.log(e); }
+  }
+</script>
+</body>
+</html>`;
+
+      win.document.open();
       win.document.write(html);
       win.document.close();
     }
   </script>
 </body>
 </html>
+
