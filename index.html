@@ -1,70 +1,78 @@
-<body><module>
-<moduleprefs title="Google.com">
-<content type="html"><!--[CDATA[
-<html-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Play 1v1.lol</title>
+  <style>
+    :root{--bg:#0f1720;--card:#0b1220;--accent:#16a34a}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:var(--bg);color:#e6eef6}
+    .wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:28px;gap:18px}
+    header{width:100%;max-width:1100px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{font-size:1.1rem;margin:0}
+    .card{width:100%;max-width:1100px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:12px;box-shadow:0 6px 24px rgba(2,6,23,0.6)}
+    /* responsive iframe container keeps 16:9 (adjust ratio if you prefer) */
+    .iframe-wrap{position:relative;width:100%;padding-top:56.25%;border-radius:8px;overflow:hidden;background:#000}
+    .iframe-wrap iframe{position:absolute;left:0;top:0;width:100%;height:100%;border:0;background:#000}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600;border:0;cursor:pointer}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#dff7df}
+    .notice{font-size:0.9rem;color:#bcd7b8;margin-top:8px}
+    .hidden{display:none}
+    @media (max-width:520px){
+      .controls{flex-direction:column;align-items:stretch}
+      header{flex-direction:column;align-items:flex-start;gap:8px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="card" style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <h1>Play 1v1.lol — embedded</h1>
+        <div style="font-size:0.9rem;color:#bcd7b8">If embedding is blocked, use the Open button below.</div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="open-new">Open in new tab</button>
+        <a class="btn secondary" href="https://1v1.lol/" target="_blank" rel="noopener noreferrer">Official site</a>
+      </div>
+    </header>
 
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <style>
-      /* Buton stili kaldırıldı, gereksiz kod temizlendi */
-    </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/n-101-1/1@main/style.css">
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/UnityProgress.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.js"></script>
-    <script type="text/javascript">
-      var gameInstance;
+    <section class="card">
+      <div class="iframe-wrap" id="frameContainer">
+        <!-- iframe src -->
+        <iframe id="gameFrame" src="https://1v1.lol/" title="1v1.lol" allow="fullscreen; autoplay; gyroscope; microphone; camera" referrerpolicy="no-referrer"></iframe>
+      </div>
 
-      window.onload = function () {
-        gameInstance = UnityLoader.instantiate("gameContainer", "https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.json", {
-          onProgress: UnityProgress,
-          Module: {
-            onRuntimeInitialized: function () {
-              UnityProgress(gameInstance, "complete");
-            },
-          },
-        });
-      };
-    </script>
+      <div id="fallback" class="notice hidden">
+        The game may block embedding. Click <a id="fallbackLink" href="https://1v1.lol/" target="_blank" rel="noopener noreferrer">here to open 1v1.lol in a new tab</a>.
+      </div>
+    </section>
+  </div>
 
+  <script>
+    // Open in new tab button
+    document.getElementById('open-new').addEventListener('click', function () {
+      window.open('https://1v1.lol/', '_blank', 'noopener');
+    });
 
-    <div class="webgl-content">
-      <div id="gameContainer" style="width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; position: relative; background: rgb(0, 0, 0);"><canvas id="#canvas" style="width: 100%; height: 100%; cursor: default;" width="1065" height="1068"></canvas><div class="logo Dark" style="display: none;"></div><div class="progress Dark" style="display: none;"><div class="empty" style="width: 0%;"></div><div class="full" style="width: 100%;"></div></div></div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-app.js"></script>
+    // Simple heuristic: if iframe doesn't fully load within X seconds, show fallback
+    (function showFallbackIfBlocked() {
+      const frame = document.getElementById('gameFrame');
+      const fallback = document.getElementById('fallback');
+      let loaded = false;
 
-    <!-- Add Firebase products that you want to use -->
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-firestore.js"></script>
+      // If iframe fires load, consider it loaded (still might be framed but this is best-effort)
+      frame.addEventListener('load', () => { loaded = true; });
 
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1login.js?v=2"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firestore.js"></script>
-
-    <script>
-      initializeFireBase();
-
-      function showAds() {
-        console.log("show ads");
-      }
-      function requestNewAd() {
-        // Show video ad
-        unityAdFinishedCallback();
-      }
-      function unityAdFinishedCallback() {
-        try {
-          if (gameInstance) gameInstance.SendMessage("AdsManager", "OnWebCallback");
-        } catch (error) {
-          console.log(error);
+      // After 3.5s, if not loaded, show fallback notice (adjust timeout as desired)
+      setTimeout(() => {
+        if (!loaded) {
+          fallback.classList.remove('hidden');
         }
-      }
-    </script>
+      }, 3500);
+    })();
+  </script>
+</body>
+</html>
 
-
-
-
-
-
-
-]]&gt;</content>
-</moduleprefs></module>
-<script src="blob:https://1870109811-atari-embeds.googleusercontent.com/3f119eca-2d40-455c-b25d-6d7c6ebd7fd5" id="a96bf7f9ec45ce9224c9b5b9b42b17b2"></script></body>
